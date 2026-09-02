@@ -1,1 +1,501 @@
 
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧠 Bank Soal & Jawaban - Pranata Komputer Keahlian</title>
+    <!-- Font Awesome & Google Font -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f4f7fb;
+            color: #1e293b;
+            padding: 30px 20px 60px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0f3b5e;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #475569;
+            margin-bottom: 30px;
+            font-size: 16px;
+            border-left: 4px solid #2563eb;
+            padding-left: 16px;
+            background: #eef2ff;
+            border-radius: 0 8px 8px 0;
+            line-height: 1.6;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 20px;
+            background: white;
+            padding: 16px 24px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            margin-bottom: 30px;
+            align-items: center;
+            border: 1px solid #e2e8f0;
+        }
+
+        .controls .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .controls label {
+            font-weight: 500;
+            font-size: 14px;
+            color: #334155;
+        }
+
+        .controls select, .controls input {
+            padding: 8px 14px;
+            border-radius: 10px;
+            border: 1px solid #cbd5e1;
+            background: white;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            color: #0f172a;
+        }
+
+        .controls .stats {
+            margin-left: auto;
+            font-size: 14px;
+            color: #475569;
+            background: #f1f5f9;
+            padding: 6px 16px;
+            border-radius: 30px;
+        }
+
+        .btn-toggle {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-toggle:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-toggle.outline {
+            background: transparent;
+            color: #2563eb;
+            border: 1px solid #2563eb;
+        }
+
+        .btn-toggle.outline:hover {
+            background: #eef2ff;
+        }
+
+        .question-card {
+            background: white;
+            border-radius: 18px;
+            padding: 22px 28px;
+            margin-bottom: 18px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+            border: 1px solid #e9edf2;
+            transition: 0.15s;
+        }
+
+        .question-card:hover {
+            border-color: #b9c7da;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            gap: 12px;
+        }
+
+        .question-text {
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #0b1e33;
+        }
+
+        .badge-modul {
+            background: #dbeafe;
+            color: #1e4b7a;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 30px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .options {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 14px;
+            border-radius: 10px;
+            background: #fafcff;
+            border: 1px solid transparent;
+            transition: 0.1s;
+            font-size: 15px;
+        }
+
+        .option-item.correct {
+            background: #ecfdf5;
+            border-color: #6ee7b7;
+        }
+
+        .option-item.correct .letter {
+            background: #059669;
+            color: white;
+        }
+
+        .option-item.wrong {
+            background: #fef2f2;
+            border-color: #fca5a5;
+        }
+
+        .option-item.wrong .letter {
+            background: #dc2626;
+            color: white;
+        }
+
+        .letter {
+            width: 26px;
+            height: 26px;
+            background: #e9edf2;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 13px;
+            flex-shrink: 0;
+            color: #1e293b;
+        }
+
+        .answer-reveal {
+            margin-top: 14px;
+            padding: 14px 18px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border-left: 4px solid #2563eb;
+            font-size: 15px;
+            line-height: 1.6;
+            display: none;
+        }
+
+        .answer-reveal.show {
+            display: block;
+        }
+
+        .answer-reveal strong {
+            color: #0f3b5e;
+        }
+
+        .answer-reveal .explanation {
+            margin-top: 6px;
+            color: #334155;
+        }
+
+        .footer-note {
+            margin-top: 40px;
+            text-align: center;
+            color: #64748b;
+            font-size: 14px;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 25px;
+        }
+
+        @media (max-width: 700px) {
+            .question-card {
+                padding: 16px 18px;
+            }
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .controls .stats {
+                margin-left: 0;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1><i class="fas fa-laptop-code" style="color: #2563eb;"></i> Bank Soal & Jawaban</h1>
+    <div class="subtitle">
+        📘 11 Modul Pelatihan Fungsional Pranata Komputer (Keahlian) — Total <span id="totalSoalCount">0</span> soal pilihan ganda + pembahasan
+    </div>
+
+    <div class="controls">
+        <div class="filter-group">
+            <label for="modulFilter"><i class="fas fa-book-open"></i> Modul</label>
+            <select id="modulFilter">
+                <option value="all">📚 Semua Modul</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label for="statusFilter"><i class="fas fa-eye"></i> Status</label>
+            <select id="statusFilter">
+                <option value="all">Semua</option>
+                <option value="unanswered">❓ Belum dijawab</option>
+                <option value="answered">✅ Sudah dijawab</option>
+            </select>
+        </div>
+        <button class="btn-toggle" id="toggleAllBtn"><i class="fas fa-chevron-down"></i> Tampilkan Semua Jawaban</button>
+        <button class="btn-toggle outline" id="resetBtn"><i class="fas fa-undo-alt"></i> Reset</button>
+        <span class="stats" id="statsDisplay">0 / 0 dijawab</span>
+    </div>
+
+    <div id="questionsContainer"></div>
+    <div class="footer-note">
+        <i class="fas fa-graduation-cap"></i> Digunakan untuk keperluan belajar mandiri — berdasarkan modul resmi BPS 2022
+    </div>
+</div>
+
+<script>
+    // --------------------------------------------------------------
+    // DATA SOAL (semua pilihan ganda dari 11 modul)
+    // --------------------------------------------------------------
+    const soalData = [
+        // ---- MODUL 01: IT Enterprise (5 soal) ----
+        { modul: "IT Enterprise", question: "Salah satu contoh platform pengelolaan data adalah:", options: ["router", "DB2", "procurve", "cisco"], correct: 1 },
+        { modul: "IT Enterprise", question: "Layanan-layanan infrastruktur TI yang merencanakan dan mengembangkan infrastruktur adalah layanan …", options: ["platform komputasi", "peranti lunak aplikasi", "manajemen teknologi informasi", "platform internet"], correct: 2 },
+        { modul: "IT Enterprise", question: "Layanan Gmail yang disediakan oleh Google merupakan bentuk cloud computing jenis …", options: ["IaaS", "PaaS", "SaaS", "Hosting"], correct: 2 },
+        { modul: "IT Enterprise", question: "Penggunaan Vmware pada suatu data center menggunakan teknologi ..", options: ["cloud computing", "virtualisasi", "green computing", "platform digital seluler"], correct: 1 },
+        { modul: "IT Enterprise", question: "Hukum yang menyatakan bahwa nilai atau kekuatan dari jaringan bertumbuh secara eksponensial sebagai fungsi dari jumlah anggota jaringan tersebut merupakan hukum …", options: ["Moore", "Metcalfe", "penyimpanan digital massal", "penurunan biaya komunikasi dan internet"], correct: 1 },
+        // ---- MODUL 02: Manajemen Layanan TI (5 soal dari bagian strategi) ----
+        { modul: "Manajemen Layanan TI", question: "Hasil sebuah kajian yang menghasilkan daftar layanan TI yang pernah ada sampai dengan rencana layanan TI masa depan merupakan bagian dari kegiatan:", options: ["Service Pipeline", "Service Portofolio", "Service Strategy", "Demand Management"], correct: 1 },
+        { modul: "Manajemen Layanan TI", question: "Istilah yang digunakan untuk menggambarkan layanan TI yang pernah ada dan disediaan namun kini telah dihentikan disebut:", options: ["Retired Service", "Perspektive", "Analysis Strategy", "Cost Benefit Analysis"], correct: 0 },
+        { modul: "Manajemen Layanan TI", question: "Kegiatan merumuskan Perspektive, Position, Plans dan Patterns merupakan tujuan dari:", options: ["Retired Service", "Service Strategy", "Service Portofolio", "Analysis Strategy"], correct: 1 },
+        { modul: "Manajemen Layanan TI", question: "Informasi yang berisi tentang kegiatan aktivitas user dan akses layanan TI yang digunakan diistilahkan dengan:", options: ["Demand Management", "Layanan TI yang diperlukan oleh bisnis.", "Patterns of Business Activity", "Cost Benefit Analysis"], correct: 2 },
+        { modul: "Manajemen Layanan TI", question: "Untuk menyusun usulan layanan TI ke Service Portofolio memerlukan Informasi tentang:", options: ["Demand Management", "Analysis Strategy", "Patterns of Business Activity", "PBA dan Finacial Analysis"], correct: 3 },
+        // ---- MODUL 03: Pengelolaan Data (5 soal) ----
+        { modul: "Pengelolaan Data", question: "Pernyataan yang tepat terkait arsitektur data adalah…", options: ["Arsitektur data merupakan domain dari EA", "Arsitektur data hanya menggambarkan aliran data mulai dari pengumpulan hingga penyimpanan data", "Arsitektur data harus menggambarkan jenis data yang ada di luar organisasi walaupun tidak ada keterkaitannya dengan kebutuhan organisasi", "Arsitektur data dapat dirancang tanpa melihat arsitektur bisnis"], correct: 0 },
+        { modul: "Pengelolaan Data", question: "Relasi antara arsitektur data dengan arsitektur integrasi data adalah…", options: ["Arsitektur integrasi data menggambarkan hubungan antar objek dalam arsitektur data", "Arsitektur data merupakan high level dari arsitektur integrasi data", "Arsitektur integrasi data adalah pendetilan dari proses integrasi yang terdapat pada arsitektur data", "Arsitektur data menggambarkan aliran data mulai dari pengumpulan hingga integrasi data"], correct: 2 },
+        { modul: "Pengelolaan Data", question: "Dari pilihan berikut, langkah-langkah yang dapat dilakukan untuk merancang arsitektur data yang tepat adalah…", options: ["Mereviu teknologi data organisasi saat ini", "Mengidentifikasi jenis data apa yang dikumpulkan, bagaimana data tersebut dikumpulkan, diproses, disimpan, dan digunakan oleh organisasi", "Melakukan perancangan business rule untuk keperluan matching dan merging", "Melakukan identifikasi sumber data yang potensial untuk diintegrasikan termasuk didalamnya assessment kualitas sumber data"], correct: 1 },
+        { modul: "Pengelolaan Data", question: "Tool yang sering digunakan dalam integrasi data adalah…", options: ["API management tool", "Worksheet", "ETL tool", "Tool visualisasi"], correct: 2 },
+        { modul: "Pengelolaan Data", question: "Integrasi data dapat dilaksanakan antara…", options: ["Data dengan tipe yang sama saja", "Data di internal organisasi saja", "Data dengan struktur data yang sama saja", "Data internal dan eksternal organisasi"], correct: 3 },
+        // ---- MODUL 04: Manajemen Risiko TI (5 soal) ----
+        { modul: "Manajemen Risiko TI", question: "Angka-angka yang terdapat pada matrik analisis risiko diperoleh dari :", options: ["Hasil perkalian antara level kemungkinan dengan level dampak, atau angka urut dari 1 sampai maksimal dimensi kemungkinan dan dampak", "Angka urut dari 1 sampai maksimal dimensi kemungkinan dan dampak", "Angka acak yang diperoleh dari 1 sampai maksimal dimensi kemungkinan dan dampak", "Hasil perkalian antara level kemungkinan dengan level dampak"], correct: 0 },
+        { modul: "Manajemen Risiko TI", question: "Jumlah kriteria untuk level kemungkinan dan dampak yang tepat yaitu :", options: ["Harus berjumlah ganjil", "5 (lima) kriteria", "Sejumlah yang telah ditetapkan oleh tim manajemen risiko", "Harus berjumlah genap"], correct: 2 },
+        { modul: "Manajemen Risiko TI", question: "Suatu risiko A memiliki besaran risiko 16, sedangkan selera risiko yang ditetapkan sebesar 18, maka risiko tersebut ... :", options: ["Bisa diabaikan dan tidak perlu ada penanganan risiko", "Semua risiko perlu tindakan penanganan", "Bisa diabaikan atau bisa juga perlu ada tindakan penanganan", "Perlu penanganan risiko namun hanya sedikit tindakan saja"], correct: 0 },
+        { modul: "Manajemen Risiko TI", question: "Ketersediaan layanan dapat diukur melalui aspek-aspek berikut... :", options: ["maintainability", "accessibility", "availability", "reliability"], correct: 2 },
+        { modul: "Manajemen Risiko TI", question: "Dalam COBIT 5, domain untuk proses 'Service Desk dan Manajemen Insiden' adalah ... :", options: ["Build, Acquire and Implement (BAI)", "Monitor Evaluate and Assess (MEA)", "Deliver, Service and Support (DSS)", "Align, Plan and Organize (APO)"], correct: 2 },
+        // ---- MODUL 05: Audit TI (5 soal) ----
+        { modul: "Audit TI", question: "Berikut ini merupakan cakupan dari audit SPBE, kecuali ... :", options: ["Aplikasi TI", "Konsultan TI", "Infrastruktur TI", "Keamanan TI"], correct: 1 },
+        { modul: "Audit TI", question: "Kegiatan audit TI sesuai dengan COBIT, kecuali ...", options: ["Build and develop", "Plan and organize", "Monitor and evaluate", "Deliver and support"], correct: 0 },
+        { modul: "Audit TI", question: "Framework Audit TI yang ditujukan untuk Enterprise Architecture, dan menyediakan pendekatan yang komprehensif terhadap desain, perencanaan, implementasi, dan tata kelola arsitektur informasi organisasi adalah ...", options: ["TOGAF", "COBIT", "ITIL", "PMBOK"], correct: 0 },
+        { modul: "Audit TI", question: "Dalam COBIT 5, domain untuk proses 'Service Desk dan Manajemen Insiden' adalah ...", options: ["Deliver, Service and Support (DSS)", "Monitor Evaluate and Assess (MEA)", "Align, Plan and Organize (APO)", "Build, Acquire and Implement (BAI)"], correct: 0 },
+        { modul: "Audit TI", question: "Yang tidak termasuk ke dalam faktor penyebab cocok atau tidaknya suatu framework untuk digunakan dalam sebuah kegiatan Audit TI adalah ...", options: ["jenis organisasi", "tool dan aplikasi Audit TI", "domain Audit TI", "objek Audit TI"], correct: 1 },
+        // ---- MODUL 06: Sistem Jaringan Komputer (5 soal) ----
+        { modul: "Sistem Jaringan Komputer", question: "Business-driven merupakan salah satu pendekatan dalam perancangan system jaringan computer yang disebut juga sebagai metode", options: ["Top-down network design", "Bottom-up network design", "Physical network design", "Logical network design"], correct: 0 },
+        { modul: "Sistem Jaringan Komputer", question: "Rancangan layout jaringan dalam bentuk skema hubungan perangkat-perangkat fisik disebut", options: ["LAN", "Ethernet", "Topologi Fisik", "Topologi Logis"], correct: 2 },
+        { modul: "Sistem Jaringan Komputer", question: "Berikut ini adalah jenis topologi yang paling sederhana", options: ["Point-to-point", "Bus", "Star", "Ring"], correct: 0 },
+        { modul: "Sistem Jaringan Komputer", question: "Berikut ini adalah jenis topologi yang paling fleksibel", options: ["Bus", "Star", "Ring", "Mesh"], correct: 1 },
+        { modul: "Sistem Jaringan Komputer", question: "Komponen jaringan computer yang berfungsi memperkuat sinyal dengan cara menerima sinyal dan suatu segment kabel lalu memancarkan kembali sinyal tsb dengan kekuatan yang sama dengan sinyal aslinya pada segment kabel lain adalah... :", options: ["Switch", "Router", "Repeater", "Bridge"], correct: 2 },
+        // ---- MODUL 07: Manajemen Infrastruktur TI (5 soal) ----
+        { modul: "Manajemen Infrastruktur TI", question: "Berikut adalah elemen dasar dalam infrastruktur TI, kecuali", options: ["Communication Types", "Network Devices", "Data Centers", "Server and Clients"], correct: 0 },
+        { modul: "Manajemen Infrastruktur TI", question: "Layanan-layanan Infrastruktur TI yang menyediakan multimedia dalam pertukaran datanya adalah", options: ["Layanan telekomunikasi", "Layanan peranti lunak aplikasi", "Manajemen fasilitas fisik", "Layanan Platform komputasi"], correct: 0 },
+        { modul: "Manajemen Infrastruktur TI", question: "Layanan-layanan Infrastruktur TI yang merencanakan dan mengembangkan infrastruktur adalah", options: ["Layanan manajemen TI", "Layanan standar TI", "Layanan Platform komputasi", "Layanan peranti lunak aplikasi"], correct: 0 },
+        { modul: "Manajemen Infrastruktur TI", question: "Berikut adalah beberapa hal yang mempengaruhi adanya Layanan dan Infrastruktur TI, kecuali", options: ["Strategi IT", "Teknologi Informasi", "Strategi Marketing", "Strategi Bisnis"], correct: 2 },
+        { modul: "Manajemen Infrastruktur TI", question: "Pada Era Mainframe & Komputer Mini, pada seri berapa yang menyediakan time sharing, multitasking dan memori virtual", options: ["Seri 306", "Seri 560", "Seri 360", "Seri 1410"], correct: 2 },
+        // ---- MODUL 08: Sistem Informasi (5 soal) ----
+        { modul: "Sistem Informasi", question: "Berikut ini yang bukan merupakan bagian dari PIECES adalah.... :", options: ["services", "effective", "control", "information"], correct: 1 },
+        { modul: "Sistem Informasi", question: "Diagram yang memberikan pandangan menyeluruh tentang sistem yang akan ditangani, menunjukkan fungsi-fungsi utama atau proses yang ada, aliran data dan entitas eksternal merupakan pengertian dari.... :", options: ["flowchart", "diagram zero", "diagram rinci", "diagram konteks"], correct: 3 },
+        { modul: "Sistem Informasi", question: "Berikut ini yang merupakan metode untuk melakukan pengujian kelayakan proyek pengembangan sistem adalah.... :", options: ["RACI", "PIECES", "TELOS", "fishbone"], correct: 2 },
+        { modul: "Sistem Informasi", question: "Keamanan computer seperti bahaya virus dan cracking, merupakan hal yang sering diperbincangkan, keamanan computer meliputi beberapa aspek dibawah ini, kecuali: :", options: ["Privasi dan kerahasiaan", "Integritas", "Layanan/Service", "Inkonsistensi fungsi program"], correct: 3 },
+        { modul: "Sistem Informasi", question: "Seperangkat kemampuan organisasi untuk memberikan nilai kepada pelanggan dalam bentuk layanan merupakan definisi dari... :", options: ["ICT (Information and Communication of Technology)", "TQM (Total Quality Management)", "ITSM (Information Technology Service Management)", "ITIL (Information Technology Infrastructure Library)"], correct: 2 },
+        // ---- MODUL 09: Pengolahan Data (5 soal) ----
+        { modul: "Pengolahan Data", question: "Format SOP yang berupa daftar langkah tanpa adanya kondisi pengambilan keputusan merupakan format …. :", options: ["Langkah sederhana", "Hirarki", "Grafik", "Flowchart"], correct: 0 },
+        { modul: "Pengolahan Data", question: "Pernyataan yang benar terkait penyusunan dokumen SOP adalah … :", options: ["Dokumen SOP terdiri dari 3 unsur, yaitu dokumentasi, prosedur, dan accessories", "Unsur prosedur terdiri dari unsur identitas, mutu baku, pelaksana, perlengkapan, dan aktivitas", "Unsur prosedur terdiri dari unsur identitas dan flowchart", "Unsur dokumentasi terdiri dari unsur identitas, mutu baku, pelaksana, tujuan, ruang lingkup, pelaksana, dan peraturan terkait"], correct: 2 },
+        { modul: "Pengolahan Data", question: "Prinsip pelaksanaan SOP harus terbuka terhadap penyempurnaan-penyempurnaan untuk memperoleh prosedur yang benar-benar efektif dan efisien, merupakan prinsip .... :", options: ["Perbaikan berkelanjutan", "Konsisten", "Komitmen", "Dapat diubah"], correct: 0 },
+        { modul: "Pengolahan Data", question: "Yang merupakan jenis pemuatan yang dilakukan pada proses data loading, yaitu:...... :", options: ["Full load, incremental load, historical load, refresh load", "Full load, full refresh, incremental load, initial load", "Full load, redundancy load, temporary load", "Full load, incrementa load, redundancy load, temporary load"], correct: 1 },
+        { modul: "Pengolahan Data", question: "Metode pemuatan data jika volume data nya sangat besar dan organisasi tidak membutuhkan pengaksesan data secara realtime, yaitu menggunakan..... :", options: ["batch processing", "realtime processing", "redundancy processing", "open source processing"], correct: 0 },
+        // ---- MODUL 10: Area TI Spesial (5 soal) ----
+        { modul: "Area TI Spesial", question: "Data yang berorientasi geografis dan memiliki sistem koordinat tertentu sebagai dasar referensinya disebut.... :", options: ["Data Kategorik", "Data Spasial", "Data Tekstual", "Data Numerik"], correct: 1 },
+        { modul: "Area TI Spesial", question: "Lebar zona pada sistem proyeksi UTM adalah... :", options: ["20 derajat", "3 derajat", "30 derajat", "6 derajat"], correct: 3 },
+        { modul: "Area TI Spesial", question: "Yang bukan termasuk jenis multimedia dibawah ini adalah... :", options: ["Multimedia Linear", "Multimedia Interaktif", "Multimedia Hiperaktif", "Multimedia Paralel"], correct: 3 },
+        { modul: "Area TI Spesial", question: "Simbol belah ketupat pada flowchart SOP, biasa digunakan untuk .... :", options: ["menunjukkan suatu proses", "menjelaskan input/output dari suatu kegiatan", "memulai atau mengakhiri suatu alur", "decision (pengambilan keputusan)"], correct: 3 },
+        { modul: "Area TI Spesial", question: "Serangkaian instruksi tertulis yang dibakukan mengenai berbagai proses penyelenggaraan aktivitas organisasi, bagaimana dan kapan harus dilakukan, dimana dan oleh siapa dilakukan adalah pengertian dari .... :", options: ["instruksi kerja", "manual", "SOP", "kebijakan"], correct: 2 },
+        // ---- MODUL 12: Dokumentasi dan Laporan (2 soal) ----
+        { modul: "Dokumentasi dan Laporan", question: "Apa saja yang dibutuhkan dalam penilaian angka kredit jabatan fungsional Pranata Komputer?", options: ["Laporan kegiatan saja", "Bukti fisik saja", "Laporan kegiatan dan bukti fisik", "Surat rekomendasi"], correct: 2 },
+        { modul: "Dokumentasi dan Laporan", question: "Apa saja yang menjadikan rujukan dalam Standar kualitas hasil kerja Pranata Komputer?", options: ["Satuan hasil kegiatan dan kelengkapan bukti fisik", "Jumlah kegiatan dan lokasi kerja", "Lama kerja dan jenjang jabatan", "Nilai SKP dan kepangkatan"], correct: 0 },
+        // ---- MODUL 13: Administrasi & Penilaian JF Prakom (5 soal) ----
+        { modul: "Administrasi & Penilaian", question: "Jabatan Fungsional Pranata Komputer adalah:", options: ["Jabatan yang berisi fungsi dan tugas berkaitan dengan pelayanan fungsional yang berdasarkan pada keahlian dan ketrampilan tertentu.", "jabatan yang mempunyai ruang lingkup, tugas, tanggung jawab, wewenang, dan hak untuk melaksanakan kegiatan sistem teknologi informasi berbasis komputer.", "pelaksana teknis fungsional di bidang sistem teknologi informasi berbasis komputer pada Instansi Pemerintah.", "Pejabat fungsional yang berkedudukan di bawah dan bertanggung jawab secara langsung kepada JPT madya, JPT pratama, pejabat administrator, atau pejabat pengawas."], correct: 1 },
+        { modul: "Administrasi & Penilaian", question: "Kedudukan pejabat fungsional Pranata Komputer ditetapkan dalam peta jabatan berdasarkan berikut ini, kecuali:", options: ["analisis tugas dan fungsi unit kerja", "analisis jabatan", "analisis beban kerja", "analisis teknologi informasi"], correct: 3 },
+        { modul: "Administrasi & Penilaian", question: "Tugas jabatan seorang Pranata Komputer adalah melaksanakan kegiatan TI berbasis komputer yang meliputi:", options: ["tata kelola dan tata laksana teknologi informasi, infrastruktur teknologi informasi, serta sistem informasi dan multimedia.", "tata kelola dan tata laksana teknologi informasi, sarana teknologi informasi, serta sistem informasi dan multimedia", "tata kelola dan tata laksana teknologi informasi, infrastruktur teknologi informasi, serta sistem informasi dan multidmensi", "tata kelola dan tata laksana teknologi informasi, infrastruktur teknologi informasi, serta sistem informasi dan multilateral"], correct: 0 },
+        { modul: "Administrasi & Penilaian", question: "Pengangkatan PNS ke dalam jabatan fungsional Pranata Komputer dilakukan melalui pengangkatan:", options: ["pengaktifan, perpindahan dari jabatan lain, promosi", "Pertama, perpindahan unit kerja, promosi", "Pertama, perpindahan dari jabatan lain, promosi", "Pertama, perpindahan unit kerja, promosi"], correct: 2 },
+        { modul: "Administrasi & Penilaian", question: "Pengangkatan dalam jabatan fungsional Pranata Komputer melalui pengangkatan pertama harus memenuhi syarat berikut ini, kecuali:", options: ["berstatus PNS", "berijazah diploma tiga di bidang TI untuk kategori ketrampilan", "berijazah diploma empat atau sarjana di bidang TI untuk kategori keahlian", "PPK bernilai baik dalam 2 (dua tahun terakhir)"], correct: 3 },
+    ];
+
+    // --------------------------------------------------------------
+    // RENDER
+    // --------------------------------------------------------------
+    const container = document.getElementById('questionsContainer');
+    const modulFilter = document.getElementById('modulFilter');
+    const statusFilter = document.getElementById('statusFilter');
+    const toggleAllBtn = document.getElementById('toggleAllBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const statsDisplay = document.getElementById('statsDisplay');
+    const totalSoalSpan = document.getElementById('totalSoalCount');
+
+    // state
+    let jawabanUser = new Array(soalData.length).fill(null); // index jawaban yang dipilih
+    let showAllAnswers = false;
+
+    // populate modul filter
+    const moduls = [...new Set(soalData.map(s => s.modul))];
+    moduls.forEach(m => {
+        const opt = document.createElement('option');
+        opt.value = m;
+        opt.textContent = m;
+        modulFilter.appendChild(opt);
+    });
+
+    function render() {
+        const filterModul = modulFilter.value;
+        const filterStatus = statusFilter.value;
+
+        let filtered = soalData.filter((s, idx) => {
+            if (filterModul !== 'all' && s.modul !== filterModul) return false;
+            if (filterStatus === 'unanswered' && jawabanUser[idx] !== null) return false;
+            if (filterStatus === 'answered' && jawabanUser[idx] === null) return false;
+            return true;
+        });
+
+        // get indices untuk mapping
+        const indices = [];
+        soalData.forEach((s, idx) => {
+            if (filterModul !== 'all' && s.modul !== filterModul) return;
+            if (filterStatus === 'unanswered' && jawabanUser[idx] !== null) return;
+            if (filterStatus === 'answered' && jawabanUser[idx] === null) return;
+            indices.push(idx);
+        });
+
+        let html = '';
+        filtered.forEach((s, i) => {
+            const realIdx = indices[i];
+            const selected = jawabanUser[realIdx];
+            const letters = ['a', 'b', 'c', 'd'];
+
+            html += `<div class="question-card" data-index="${realIdx}">`;
+            html += `<div class="question-header">`;
+            html += `<div class="question-text">${s.question}</div>`;
+            html += `<span class="badge-modul">${s.modul}</span>`;
+            html += `</div>`;
+            html += `<div class="options">`;
+            s.options.forEach((opt, oi) => {
+                let cls = 'option-item';
+                if (selected !== null) {
+                    if (oi === s.correct) cls += ' correct';
+                    else if (oi === selected && oi !== s.correct) cls += ' wrong';
+                }
+                html += `<div class="${cls}" data-optindex="${oi}" style="cursor:pointer;">`;
+                html += `<span class="letter">${letters[oi]}</span>`;
+                html += `<span>${opt}</span>`;
+                html += `</div>`;
+            });
+            html += `</div>`;
+
+            // answer reveal
+            const show = (selected !== null || showAllAnswers);
+            html += `<div class="answer-reveal ${show ? 'show' : ''}">`;
+            html += `<strong><i class="fas fa-check-circle" style="color:#059669;"></i> Jawaban: ${letters[s.correct]}. ${s.options[s.correct]}</strong>`;
+            html += `<div class="explanation"><i class="fas fa-book-open" style="color:#2563eb;"></i> Berdasarkan modul ${s.modul}</div>`;
+            html += `</div>`;
+            html += `</div>`;
+        });
+
+        container.innerHTML = html;
+
+        // attach click listeners
+        document.querySelectorAll('.question-card').forEach(card => {
+            const idx = parseInt(card.dataset.index);
+            card.querySelectorAll('.option-item').forEach(opt => {
+                opt.addEventListener('click', function(e) {
+                    const oi = parseInt(this.dataset.optindex);
+                    if (jawabanUser[idx] !== null) return; // sudah dijawab
+                    jawabanUser[idx] = oi;
+                    render();
+                    updateStats();
+                });
+            });
+        });
+
+        updateStats();
+        totalSoalSpan.textContent = soalData.length;
+    }
+
+    function updateStats() {
+        const answered = jawabanUser.filter(a => a !== null).length;
+        statsDisplay.textContent = `${answered} / ${soalData.length} dijawab`;
+    }
+
+    // event listeners
+    modulFilter.addEventListener('change', render);
+    statusFilter.addEventListener('change', render);
+
+    toggleAllBtn.addEventListener('click', function() {
+        showAllAnswers = !showAllAnswers;
+        this.innerHTML = showAllAnswers ? '<i class="fas fa-chevron-up"></i> Sembunyikan Jawaban' : '<i class="fas fa-chevron-down"></i> Tampilkan Semua Jawaban';
+        render();
+    });
+
+    resetBtn.addEventListener('click', function() {
+        jawabanUser = new Array(soalData.length).fill(null);
+        showAllAnswers = false;
+        toggleAllBtn.innerHTML = '<i class="fas fa-chevron-down"></i> Tampilkan Semua Jawaban';
+        modulFilter.value = 'all';
+        statusFilter.value = 'all';
+        render();
+    });
+
+    // initial render
+    render();
+</script>
+</body>
+</html>
